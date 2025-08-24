@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug TypeScript Direct",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "/Users/vinaylohar/.nvm/versions/node/v22.17.0/bin/npx",
+      "runtimeArgs": ["ts-node"],
+      "preLaunchTask": "npm: build",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
