@@ -10,11 +10,22 @@ export function createServer(): express.Application {
 
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpec, { explorer: true }));
 
-  // CORS - allow all origins
-  app.use(cors({
+  // CORS using config.allowedOrigins
+  const originWhitelist = new Set(config.allowedOrigins);
+  const corsOptions: cors.CorsOptions = {
+    origin(origin, callback) {
+      if (!origin || originWhitelist.has('*') || originWhitelist.has(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
-  }));
+    allowedHeaders: ['Content-Type'],
+    credentials: true,
+    optionsSuccessStatus: 204
+  };
+  app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions));
 
   // Request parsing with size limits
   app.use(express.json({
